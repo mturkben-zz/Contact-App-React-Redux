@@ -11,6 +11,8 @@
 # production
 /build
 
+# EsLint
+.eslintcache
 # misc
 .DS_Store
 .env.local

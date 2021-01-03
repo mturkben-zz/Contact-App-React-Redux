@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import {Switch,BrowserRouter,Route} from "react-router-dom";
 
-function App() {
+import {useEffect} from "react";
+
+import{connect} from "react-redux";
+
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+
+import "./App.css";
+import Home from "./pages/Home";
+import AddContact from "./pages/AddContact";
+import ListContact from "./pages/ListContact";
+import NotFound from "./components/NotFound";
+
+import {fetchData} from "./api/database";
+
+
+const  App = (props) =>  {
+  useEffect(() => {
+    props.onGetData();
+  }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="continer-fluid">
+        <Header/>
+          <Switch>
+            <Route exact path="/" component={Home}/>
+            <Route exact path="/list" component={ListContact}/>
+            <Route exact path="/add" component={AddContact}/>
+            <Route component={NotFound}/>
+          </Switch>
+        <Footer/>
+      </div>
+    </BrowserRouter>
   );
 }
+const mapStateToProps = state => state;
 
-export default App;
+const mapDispatchToProps = {
+  onGetData:fetchData
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);
